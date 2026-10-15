@@ -1,7 +1,7 @@
 {
   "name": "proyecto-backend-node",
   "version": "1.0.0",
-  "description": "",
+  "description": "Esta es una API simple para gestionar productos. Proporciona endpoints para obtener la lista de productos y detalles de cada producto.",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
@@ -17,5 +17,13 @@
   },
   "devDependencies": {
     "@types/express": "^5.0.6"
-  }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/reymf1/api-rest-comision-2C-2026.git"
+  },
+  "bugs": {
+    "url": "https://github.com/reymf1/api-rest-comision-2C-2026/issues"
+  },
+  "homepage": "https://github.com/reymf1/api-rest-comision-2C-2026#readme"
 }
