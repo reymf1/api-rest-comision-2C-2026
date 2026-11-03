@@ -1,0 +1,56 @@
+{
+  "productos": [
+    {
+      "id": 1,
+      "nombre": "El Gran Gatsby",
+      "precio": 15.99,
+      "categoriaId": 1
+    },
+    {
+      "id": 2,
+      "nombre": "1984",
+      "precio": 12.99,
+      "categoriaId": 3
+    },
+    {
+      "id": 3,
+      "nombre": "Cien Años de Soledad",
+      "precio": 18.5,
+      "categoriaId": 1
+    },
+    {
+      "id": 4,
+      "nombre": "El Código Da Vinci",
+      "precio": 14.75,
+      "categoriaId": 5
+    },
+    {
+      "id": 5,
+      "nombre": "Orgullo y Prejuicio",
+      "precio": 10.99,
+      "categoriaId": 4
+    }
+  ],
+  "categorias": [
+    {
+      "id": 1,
+      "nombre": "Ficción"
+    },
+    {
+      "id": 2,
+      "nombre": "No Ficción"
+    },
+    {
+      "id": 3,
+      "nombre": "Ciencia Ficción"
+    },
+    {
+      "id": 4,
+      "nombre": "Romance"
+    },
+    {
+      "id": 5,
+      "nombre": "Misterio"
+    }
+  ]
+}
