@@ -1,23 +1,13 @@
-import { readFile, writeFile } from "fs/promises";
+import {
+  readCatalog,
+  writeCatalog,
+} from "../repositories/catalog.repository.js"; //Importa las funciones readCatalog y writeCatalog del archivo catalog.repository.js ubicado en la carpeta repositories. Estas funciones permiten leer y escribir el catálogo de productos desde y hacia un archivo JSON, respectivamente, facilitando la gestión de los datos de productos en la aplicación.
 
-const productos = [
-  { id: 1, nombre: "producto 1", precio: 100, categoriaId: 1 },
-  { id: 2, nombre: "producto 2", precio: 200, categoriaId: 2 },
-  { id: 3, nombre: "producto 3", precio: 300, categoriaId: 1 },
-];
-
-const dataUrl = new URL("../../data/catalog.json", import.meta.url);
-
-const readCatalog = async () => {
-  const catologJson = await readFile(dataUrl, "utf-8"); //Lee el contenido del archivo catalog.json ubicado en la ruta especificada por dataUrl. El contenido se lee como una cadena de texto en formato UTF-8.
-  catalog = JSON.parse(catologJson);
-  return catalog;
-};
-
-const writeCatalog = async (catalog) => {
-  const catalogJson = JSON.stringify(catalog, null, 2); //Convierte el objeto catalog en una cadena JSON con una sangría de 2 espacios para mejorar la legibilidad. Esto es útil para almacenar datos estructurados en un archivo de texto, permitiendo que los datos sean fácilmente legibles y editables por humanos. Null se pasa como segundo argumento para indicar que no se desea aplicar ninguna transformación a los valores del objeto durante la conversión a JSON.
-  await writeFile(dataUrl, catalogJson, "utf-8"); //Escribe la cadena JSON en el archivo catalog.json ubicado en la ruta especificada por dataUrl. El contenido se escribe en formato UTF-8, asegurando que los caracteres especiales se manejen correctamente. Esto permite que los cambios realizados en el objeto catalog se guarden de manera persistente en el archivo.
-};
+// const productos = [
+//   { id: 1, nombre: "producto 1", precio: 100, categoriaId: 1 },
+//   { id: 2, nombre: "producto 2", precio: 200, categoriaId: 2 },
+//   { id: 3, nombre: "producto 3", precio: 300, categoriaId: 1 },
+// ];
 
 export const findAll = async (categoriaId) => {
   const { productos } = await readCatalog();
@@ -37,8 +27,8 @@ export const findById = async (id) => {
 export const create = async ({ name, price, categoryId }) => {
   const catalog = await readCatalog();
   const ids = productos.map((p) => p.id);
-  const maxId = Math.max(...ids); //Calcula el ID máximo actual en el array productos. Esto se hace para asignar un nuevo ID único al nuevo producto que se va a crear. Se utiliza Math.max para encontrar el valor máximo entre los IDs existentes.El spread operator (...) se utiliza para expandir el array ids en una lista de argumentos individuales para Math.max. Esto permite que Math.max compare todos los IDs y devuelva el valor máximo.
-  const newId = maxId + 1;
+  const newId = ids.length > 0 ? Math.max(...ids) + 1 : 1; //Calcula el nuevo ID para el producto que se va a crear. Si hay productos existentes, se toma el ID máximo y se le suma 1 para generar un nuevo ID único. Si no hay productos, se asigna el ID 1 al nuevo producto. Esto asegura que cada producto tenga un identificador único en el catálogo.
+
   const nuevoProducto = {
     id: newId,
     nombre: name,

@@ -63,39 +63,54 @@ export const createProducto = async (req, res) => {
 };
 
 export const updateProducto = async (req, res) => {
-  const productoId = parseInt(req.params.id);
-  const { nombre, precio, categoriaId } = req.body ?? {};
+  try {
+    const productoId = parseInt(req.params.id);
+    const { nombre, precio, categoriaId } = req.body ?? {};
 
-  if (
-    !nombre ||
-    precio === undefined ||
-    precio < 0 ||
-    categoriaId === undefined ||
-    categoriaId < 0
-  ) {
-    return res.status(422).json({ error: "Faltan datos del producto" });
+    if (
+      !nombre ||
+      precio === undefined ||
+      precio < 0 ||
+      categoriaId === undefined ||
+      categoriaId < 0
+    ) {
+      return res.status(422).json({ error: "Faltan datos del producto" });
+    }
+
+    const productoActualizado = await productsModel.update(productoId, {
+      nombre,
+      precio,
+      categoriaId,
+    });
+
+    if (!productoActualizado) {
+      return res.status(404).json({ error: "Producto no encontrado" });
+    }
+
+    res.json(productoActualizado);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Error al actualizar el producto" });
   }
-
-  const productoActualizado = await productsModel.update(productoId, {
-    nombre,
-    precio,
-    categoriaId,
-  });
-  res.json(productoActualizado);
 };
 
 export const deleteProducto = async (req, res) => {
-  const productoId = parseInt(req.params.id);
+  try {
+    const productoId = parseInt(req.params.id);
 
-  if (isNaN(productoId)) {
-    return res.status(400).json({ error: "ID inválido" });
+    if (isNaN(productoId)) {
+      return res.status(400).json({ error: "ID inválido" });
+    }
+
+    const removedProduct = await productsModel.remove(productoId);
+
+    if (!removedProduct) {
+      return res.status(404).json({ error: "Producto no encontrado" });
+    }
+
+    res.json(removedProduct);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Error al eliminar el producto" });
   }
-
-  const removedProduct = await productsModel.remove(productoId);
-
-  if (!removedProduct) {
-    return res.status(404).json({ error: "Producto no encontrado" });
-  }
-
-  res.json(removedProduct);
 };
