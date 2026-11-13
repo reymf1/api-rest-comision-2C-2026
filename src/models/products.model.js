@@ -26,7 +26,11 @@ export const findById = async (id) => {
 
 export const create = async ({ name, price, categoryId }) => {
   const catalog = await readCatalog();
+
+  const { productos } = catalog;
+
   const ids = productos.map((p) => p.id);
+
   const newId = ids.length > 0 ? Math.max(...ids) + 1 : 1; //Calcula el nuevo ID para el producto que se va a crear. Si hay productos existentes, se toma el ID máximo y se le suma 1 para generar un nuevo ID único. Si no hay productos, se asigna el ID 1 al nuevo producto. Esto asegura que cada producto tenga un identificador único en el catálogo.
 
   const nuevoProducto = {
@@ -48,14 +52,16 @@ export const update = async (id, { name, price, categoryId }) => {
   const producto = productos.find((p) => p.id === parseInt(id));
 
   if (!producto) {
-    throw new Error("Producto no encontrado");
+    return null; //Devuelve null si no se encuentra el producto con el ID especificado. Esto permite que el controlador que llama a esta función pueda manejar el caso en el que el producto no existe y enviar una respuesta adecuada al cliente, como un error 404 (No encontrado).
   }
 
-  producto.name = name;
-  producto.price = price;
-  producto.categoryId = categoryId;
+  producto.nombre = name;
+  producto.precio = price;
+  producto.categoriaId = categoryId;
 
-  return producto; //Devuelve el objeto producto actualizado. Esto permite que el controlador que llama a esta función pueda enviar la respuesta al cliente con los datos actualizados del producto. En un entorno real, después de actualizar el producto en la base de datos, se devolvería el objeto actualizado para confirmar que la operación fue exitosa y proporcionar al cliente la informgit addación más reciente del recurso.
+  await writeCatalog({ productos }); //Guarda el array actualizado de productos en el archivo catalog.json. Esto asegura que los cambios realizados (la actualización del producto) se persistan en el almacenamiento. La función writeCatalog se encarga de convertir el objeto en una cadena JSON y escribirlo en el archivo correspondiente.
+
+  return producto; //Devuelve el objeto producto actualizado. Esto permite que el controlador que llama a esta función pueda enviar la respuesta al cliente con los datos actualizados del producto. En un entorno real, después de actualizar el producto en la base de datos, se devolvería el objeto actualizado para confirmar que la operación fue exitosa y proporcionar al cliente la información más reciente del recurso.
 };
 export const remove = async (id) => {
   const catalog = await readCatalog();
@@ -63,7 +69,7 @@ export const remove = async (id) => {
   const index = catalog.productos.findIndex((p) => p.id === parseInt(id));
 
   if (index === -1) {
-    throw new Error("Producto no encontrado");
+    return null;
   }
   const [removedProduct] = catalog.productos.splice(index, 1); //El método splice se utiliza para eliminar un elemento del array catalog.productos en la posición index. El segundo argumento (1) indica que se debe eliminar un solo elemento. La función devuelve un array con los elementos eliminados, y mediante la desestructuración ([removedProduct]), se obtiene el primer (y único) elemento eliminado, que es el producto que se ha eliminado del catálogo.
 

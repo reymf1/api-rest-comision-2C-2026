@@ -29,6 +29,21 @@
       "nombre": "Orgullo y Prejuicio",
       "precio": 10.99,
       "categoriaId": 4
+    },
+    {
+      "id": 6,
+      "nombre": "El Código Da Vinci",
+      "precio": 14.75,
+      "categoriaId": 5
+    },
+    {
+      "id": 7
+    },
+    {
+      "id": 8
+    },
+    {
+      "id": 9
     }
   ],
   "categorias": [

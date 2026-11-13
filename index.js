@@ -2,6 +2,8 @@ import express from "express";
 import cors from "cors";
 import productsRouter from "./src/routes/products.router.js";
 import categoriesRouter from "./src/routes/categories.router.js";
+import productsFirebaseRouter from "./src/routes/products.firebase.router.js";
+//import categoriesFirebaseRouter from "./src/routes/categories.firebase.router.js";
 
 const app = express();
 app.use(cors()); //Configura CORS (Cross-Origin Resource Sharing) para permitir solicitudes desde diferentes dominios. Esto es útil cuando el frontend y el backend están en dominios diferentes, ya que permite que el frontend haga solicitudes al backend sin restricciones de origen.
@@ -18,8 +20,10 @@ app.get("/", (req, res) => {
   res.send("Hola, mundo desde Express!");
 });
 
-app.use("/api/productos", productsRouter);
+app.use("/api/productos", productsRouter);//Configura la ruta base para las operaciones relacionadas con productos. Todas las solicitudes que comiencen con /api/productos serán manejadas por el router productsRouter, que contiene las rutas específicas para crear, leer, actualizar y eliminar productos.
 app.use("/api/categorias", categoriesRouter);
+app.use("/api/firebase/productos", productsFirebaseRouter);
+//app.use("/api/firebase/categorias", categoriesFirebaseRouter);
 
 const PORT = 3000;
 
